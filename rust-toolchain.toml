@@ -1,0 +1,6 @@
+[toolchain]
+# The toolchain LIVI pins, its crates are built with it.
+channel = "beta-2026-10-18"
+components = ["clippy", "rustfmt"]
+targets = ["aarch64-linux-android", "x86_64-linux-android"]
+profile = "minimal"

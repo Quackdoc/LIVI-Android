@@ -1,0 +1,95 @@
+[workspace]
+
+[workspace.dependencies]
+# The LIVI crates this builds against, from the fork. Cargo.lock pins the commit.
+livi-aa = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+livi-aa-stack = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+livi-hfp = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+livi-wifi = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+livi-core-proto = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+livi-host-proto = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+livi-ui = { git = "https://github.com/Quackdoc/LIVI", branch = "refactor/aa-bootstrap" }
+
+[package]
+name = "livi-android"
+version = "0.1.0"
+edition = "2024"
+description = "LIVI for Android"
+license = "GPL-3.0-or-later"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+base64 = "0.23"
+jni = "0.22"
+libc = "1.0.0-alpha.5"
+livi-aa.workspace = true
+livi-aa-stack.workspace = true
+livi-core-proto.workspace = true
+livi-hfp.workspace = true
+livi-host-proto.workspace = true
+livi-ui.workspace = true
+livi-wifi.workspace = true
+ndk = { version = "0.9", features = ["audio", "media", "api-level-29"] }
+serde_json = "1"
+slint = { version = "1.18.1", default-features = false, features = [
+	"std",
+	"compat-1-2",
+	"backend-android-activity-06",
+	"renderer-skia-vulkan",
+] }
+tokio = { version = "1", features = ["rt-multi-thread", "sync", "net", "io-util", "macros", "time"] }
+
+[package.metadata.android]
+package = "dev.f_io.livi"
+build_targets = ["x86_64-linux-android", "aarch64-linux-android"]
+
+[[package.metadata.android.uses_permission]]
+name = "android.permission.RECORD_AUDIO"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.INTERNET"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.ACCESS_NETWORK_STATE"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.ACCESS_WIFI_STATE"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.CHANGE_WIFI_STATE"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.NEARBY_WIFI_DEVICES"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.ACCESS_FINE_LOCATION"
+[[package.metadata.android.uses_permission]]
+name = "android.permission.BLUETOOTH"
+max_sdk_version = 30
+[[package.metadata.android.uses_permission]]
+name = "android.permission.BLUETOOTH_ADMIN"
+max_sdk_version = 30
+[[package.metadata.android.uses_permission]]
+name = "android.permission.BLUETOOTH_CONNECT"
+
+[[package.metadata.android.uses_feature]]
+name = "android.hardware.usb.host"
+required = false
+
+[package.metadata.android.sdk]
+min_sdk_version = 29
+target_sdk_version = 34
+
+[package.metadata.android.application]
+label = "LIVI"
+theme = "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+
+[package.metadata.android.application.activity]
+config_changes = "orientation|keyboardHidden|screenSize|smallestScreenSize|screenLayout|density|uiMode"
+launch_mode = "singleTask"
+orientation = "sensorLandscape"
+
+[package.metadata.android.signing.release]
+path = "debug.keystore"
+keystore_password = "android"
+
+[package.metadata.android.signing.dev]
+path = "debug.keystore"
+keystore_password = "android"
